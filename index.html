@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>심양팀 생산 투입 횟수 종합 분석 대시보드</title>
+    <meta name="description" content="심양팀 2023~2025년 생산 투입 횟수 종합 분석 대시보드">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0f172a; --card: rgba(30,41,59,1); --text: #f8fafc; --muted: #94a3b8;
+            --accent: #3b82f6; --accent2: #60a5fa; --success: #10b981; --danger: #ef4444;
+            --warning: #f59e0b; --border: rgba(255,255,255,0.1); --thead: #0a2540;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Inter',sans-serif; }
+        body { background:var(--bg); color:var(--text); min-height:100vh; padding:1.5rem;
+            background-image: radial-gradient(at 0% 0%, rgba(59,130,246,0.1) 0px, transparent 40%),
+                              radial-gradient(at 100% 100%, rgba(16,185,129,0.05) 0px, transparent 40%);
+            background-attachment:fixed; }
+        header { text-align:center; margin-bottom:1.25rem; }
+        h1 { font-size:1.5rem; font-weight:700; }
+        .sub { font-size:0.8rem; color:var(--muted); margin-top:0.25rem; }
+        .badge { display:inline-block; background:rgba(59,130,246,0.2); color:var(--accent2); padding:0.2rem 0.7rem; border-radius:2rem; font-size:0.72rem; margin-top:0.4rem; }
+        .grid { display:grid; grid-template-columns:repeat(12,1fr); gap:1.1rem; margin-bottom:1.1rem; }
+        .card { background:var(--card); border:1px solid var(--border); border-radius:1rem; padding:1.1rem;
+            box-shadow:0 4px 6px rgba(0,0,0,0.1); transition:transform 0.2s,box-shadow 0.2s; }
+        .card:hover { transform:translateY(-2px); box-shadow:0 8px 20px rgba(0,0,0,0.2); }
+        .card-h { font-size:0.95rem; font-weight:600; margin-bottom:0.6rem; padding-bottom:0.4rem; border-bottom:1px solid var(--border); }
+        .mc { grid-column:span 3; text-align:center; }
+        .mc-t { font-size:0.75rem; color:var(--muted); font-weight:600; margin-bottom:0.3rem; }
+        .mc-v { font-size:1.7rem; font-weight:700; }
+        .mc-s { font-size:0.7rem; color:var(--muted); margin-top:0.15rem; }
+        .cc6 { height:300px; position:relative; grid-column:span 6; }
+        .cc12 { height:320px; position:relative; grid-column:span 12; }
+        .tc { grid-column:span 12; overflow-x:auto; }
+        .tc6 { grid-column:span 6; overflow-x:auto; }
+        table { width:100%; border-collapse:collapse; font-size:0.75rem; text-align:right; white-space:nowrap; }
+        th,td { padding:0.45rem 0.6rem; border:1px solid var(--border); }
+        th { background:var(--thead); color:#fff; font-weight:600; text-align:center; }
+        td:first-child { text-align:center; font-weight:600; }
+        tbody tr:nth-child(even) { background:rgba(255,255,255,0.03); }
+        tbody tr:hover { background:rgba(255,255,255,0.08); }
+        .hl { background:rgba(239,68,68,0.15)!important; color:var(--danger); font-weight:700; }
+        /* Filters */
+        .filter-bar { grid-column:span 12; display:flex; gap:1.5rem; align-items:center; padding:0.8rem 1.2rem; flex-wrap:wrap; }
+        .filter-bar .label { font-weight:600; font-size:0.9rem; color:var(--accent2); }
+        .fg { display:flex; gap:0.4rem; align-items:center; }
+        .fg span { font-size:0.8rem; color:var(--muted); }
+        .fsel { background:rgba(15,23,42,0.8); color:var(--text); border:1px solid rgba(255,255,255,0.2);
+            padding:0.4rem 2rem 0.4rem 0.7rem; border-radius:0.5rem; font-size:0.8rem; outline:none; cursor:pointer;
+            appearance:none; -webkit-appearance:none;
+            background-image:url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+            background-repeat:no-repeat; background-position:right 0.4rem center; background-size:1.1em; min-width:110px; }
+        .fsel:focus { border-color:var(--accent); }
+        .filter-result { margin-left:auto; font-size:0.78rem; color:var(--success); font-weight:600; }
+        .insight-box { grid-column:span 12; background:linear-gradient(135deg,rgba(59,130,246,0.1),rgba(16,185,129,0.1));
+            border:1px solid rgba(59,130,246,0.3); border-radius:1rem; padding:1.2rem; }
+        .insight-box h3 { color:var(--accent2); margin-bottom:0.6rem; font-size:0.95rem; }
+        .ins { display:flex; gap:0.6rem; margin-bottom:0.35rem; font-size:0.8rem; }
+        .ins-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.2rem; }
+        @media(max-width:1024px){ .mc{grid-column:span 6;} .cc6,.tc6{grid-column:span 12;} }
+        @media(max-width:768px){ .mc{grid-column:span 12;} .ins-grid{grid-template-columns:1fr;} }
+        footer { text-align:center; color:var(--muted); font-size:0.7rem; padding:0.8rem 0; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🏭 심양팀 생산 투입 횟수 종합 분석 대시보드</h1>
+        <div class="sub">2023 ~ 2025년 생산 투입 데이터 기반 인터랙티브 분석</div>
+        <div class="badge">📊 데이터 내장 · 필터 실시간 반영 · 파일 업로드 불필요</div>
+    </header>
+
+    <div class="grid">
+        <!-- Filter Bar -->
+        <div class="card filter-bar" id="filterBar">
+            <div class="label">🔍 통합 필터</div>
+            <div class="fg"><span>연도:</span><select id="fYear" class="fsel" onchange="applyFilters()"><option value="ALL">전체</option></select></div>
+            <div class="fg"><span>사업부:</span><select id="fDiv" class="fsel" onchange="applyFilters()"><option value="ALL">전체</option></select></div>
+            <div class="fg"><span>고객사:</span><select id="fCust" class="fsel" onchange="applyFilters()"><option value="ALL">전체</option></select></div>
+            <div class="fg"><span>모델:</span><select id="fModel" class="fsel" onchange="applyFilters()" style="min-width:160px;"><option value="ALL">전체</option></select></div>
+            <div class="fg"><span>Lot:</span>
+                <select id="fLot" class="fsel" onchange="applyFilters()">
+                    <option value="ALL">전체</option>
+                    <option value="SAM">샘플 (< 100)</option>
+                    <option value="SML">소량 (100~999)</option>
+                    <option value="MED">중량 (1K~5K)</option>
+                    <option value="LRG">대량 (≥ 5K)</option>
+                </select>
+            </div>
+            <div class="filter-result" id="filterResult"></div>
+        </div>
+
+        <!-- KPI Cards -->
+        <div class="card mc" id="kpi1"><div class="mc-t">총 투입 횟수</div><div class="mc-v" id="vCount">-</div></div>
+        <div class="card mc" id="kpi2"><div class="mc-t">총 생산 수량</div><div class="mc-v" id="vQty">-</div><div class="mc-s" id="vQtyFull"></div></div>
+        <div class="card mc" id="kpi3"><div class="mc-t">일평균 투입</div><div class="mc-v" id="vDaily" style="color:var(--danger)">-</div><div class="mc-s" id="vDailySub"></div></div>
+        <div class="card mc" id="kpi4"><div class="mc-t">소량 비율 (<1,000)</div><div class="mc-v" id="vSmall" style="color:var(--warning)">-</div><div class="mc-s" id="vSmallSub"></div></div>
+    </div>
+
+    <!-- Charts -->
+    <div class="grid">
+        <div class="card cc6"><div class="card-h">📈 연도별 총 투입 횟수</div><canvas id="chYearly"></canvas></div>
+        <div class="card cc6"><div class="card-h">🍩 Lot Size 구간별 비율</div><canvas id="chLot"></canvas></div>
+    </div>
+    <div class="grid">
+        <div class="card cc6"><div class="card-h">👥 고객사별 투입 횟수 TOP 7</div><canvas id="chCust"></canvas></div>
+        <div class="card cc6"><div class="card-h">🏢 사업부별 투입 비교<div style="font-size:0.65rem;color:var(--muted);font-weight:400;margin-top:0.15rem;">전자: VD, HP, 대덕  |  가전: Coway, 생활가전, 대덕, 한화비전, 경동나비엔</div></div><canvas id="chDiv"></canvas></div>
+    </div>
+    <div class="grid">
+        <div class="card cc12"><div class="card-h">📅 월별 투입 횟수 추이</div><canvas id="chMonthly"></canvas></div>
+    </div>
+
+    <!-- Tables -->
+    <div class="grid">
+        <div class="card tc"><div class="card-h">📋 1. 연도별 종합 지표</div><div id="t1"></div></div>
+    </div>
+    <div class="grid">
+        <div class="card tc6"><div class="card-h">📋 2. Lot Size 구간별 분포</div><div id="t2"></div></div>
+        <div class="card tc6"><div class="card-h">📋 3. 사업부별 현황</div><div id="t3"></div></div>
+    </div>
+    <div class="grid">
+        <div class="card tc6"><div class="card-h">📋 4. 고객사별 투입 TOP</div><div id="t4"></div></div>
+        <div class="card tc6"><div class="card-h">📋 5. Small Lot (100~1,000) 투입 횟수 TOP 15</div><div id="t5"></div></div>
+    </div>
+
+    <!-- Insights -->
+    <div class="grid">
+        <div class="insight-box">
+            <h3>💡 핵심 진단 및 개선 방안</h3>
+            <div class="ins-grid">
+                <div>
+                    <div style="font-weight:600;margin-bottom:0.4rem;color:var(--danger);">⚠ 핵심 문제점</div>
+                    <div class="ins"><span>1️⃣</span><span>일평균 투입 19.3→21.2회 매년 증가 (라인 전환 빈도 악화)</span></div>
+                    <div class="ins"><span>2️⃣</span><span>소량 생산(<1,000) 비중 30~35% 고착 (셋업 타임 낭비)</span></div>
+                    <div class="ins"><span>3️⃣</span><span>가전사업부·HP·Coway 소량 다빈도 구조 심각</span></div>
+                </div>
+                <div>
+                    <div style="font-weight:600;margin-bottom:0.4rem;color:var(--success);">✅ 우선순위별 실행안</div>
+                    <div class="ins"><span>🔴</span><span>1순위: HP·Coway 주간 통합 발주(Blanket PO) 협상 → 투입 20~30%↓</span></div>
+                    <div class="ins"><span>🔴</span><span>2순위: 가전 유사 모델 그룹핑 생산(Group Tech) → 셋업 40%↓</span></div>
+                    <div class="ins"><span>🟡</span><span>3순위: 소량 전담 셀(Cell) 라인 분리 → 양산 라인 보호</span></div>
+                    <div class="ins"><span>🟡</span><span>4순위: 주말 투입 최소화 → 인건비 절감</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>심양팀 생산 투입 횟수 분석 대시보드 · 데이터 기준: 2023.01 ~ 2025.12</footer>
+
+    <script src="data.js"></script>
+    <script>
+    Chart.defaults.color='#94a3b8'; Chart.defaults.font.family="'Inter',sans-serif";
+    const COLORS=['#2563eb','#7c3aed','#059669','#0891b2','#ef4444','#d97706','#db2777','#475569'];
+
+    // Prepare data with tier
+    RAW_DATA.forEach(r => {
+        r.yr = r.d.substring(0,4);
+        r.mo = r.d.substring(0,7);
+        if(r.q < 100) r.tier='SAM';
+        else if(r.q < 1000) r.tier='SML';
+        else if(r.q < 5000) r.tier='MED';
+        else r.tier='LRG';
+    });
+
+    // Populate filters
+    const uYears = [...new Set(RAW_DATA.map(r=>r.yr))].sort();
+    const uCusts = [...new Set(RAW_DATA.map(r=>r.c))].sort();
+    const uDivs = [...new Set(RAW_DATA.map(r=>r.dv))].sort();
+    const uModels = [...new Set(RAW_DATA.map(r=>r.m))].sort();
+
+    const addOpts = (id, arr) => { const s=document.getElementById(id); arr.forEach(v => { const o=document.createElement('option'); o.value=v; o.textContent=v; s.appendChild(o); }); };
+    addOpts('fYear', uYears); addOpts('fCust', uCusts); addOpts('fDiv', uDivs); addOpts('fModel', uModels);
+
+    // Charts
+    let chYearly, chLot, chDiv, chCust, chMonthly;
+    const mkChart = (id,type,cfg) => new Chart(document.getElementById(id),{type,...cfg});
+
+    chYearly = mkChart('chYearly','bar',{data:{labels:[],datasets:[]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{beginAtZero:true,title:{display:true,text:'투입 횟수'}},y1:{position:'right',beginAtZero:false,min:15,max:25,title:{display:true,text:'일평균 (회/일)'},grid:{drawOnChartArea:false}}},plugins:{legend:{labels:{boxWidth:10}}}}});
+    chLot = mkChart('chLot','doughnut',{data:{labels:[],datasets:[]},options:{responsive:true,maintainAspectRatio:false,cutout:'55%',plugins:{legend:{position:'bottom',labels:{boxWidth:10,padding:8,font:{size:10}}},tooltip:{callbacks:{label:ctx=>{const t=ctx.dataset.data.reduce((a,b)=>a+b,0);return ctx.label+': '+ctx.parsed.toLocaleString()+'회 ('+(ctx.parsed/t*100).toFixed(1)+'%)';}}}}}});
+    chDiv = mkChart('chDiv','bar',{data:{labels:[],datasets:[]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{boxWidth:10}}}}});
+    chCust = mkChart('chCust','bar',{data:{labels:[],datasets:[]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false}}}});
+    chMonthly = mkChart('chMonthly','line',{data:{labels:[],datasets:[]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{boxWidth:10}}},scales:{y:{beginAtZero:false}}}});
+
+    function applyFilters() {
+        const fy=document.getElementById('fYear').value;
+        const fc=document.getElementById('fCust').value;
+        const fd=document.getElementById('fDiv').value;
+        const fm=document.getElementById('fModel').value;
+        const fl=document.getElementById('fLot').value;
+
+        const data = RAW_DATA.filter(r => {
+            if(fy!=='ALL' && r.yr!==fy) return false;
+            if(fc!=='ALL' && r.c!==fc) return false;
+            if(fd!=='ALL' && r.dv!==fd) return false;
+            if(fm!=='ALL' && r.m!==fm) return false;
+            if(fl!=='ALL' && r.tier!==fl) return false;
+            return true;
+        });
+
+        document.getElementById('filterResult').textContent = `총 ${data.length.toLocaleString()}건 매칭`;
+        render(data);
+    }
+
+    function render(data) {
+        const total = data.length;
+        const totalQty = data.reduce((s,r)=>s+r.q,0);
+        const dates = new Set(data.map(r=>r.d));
+        const dailyAvg = total/(dates.size||1);
+        const smallCnt = data.filter(r=>r.q<1000).length;
+        const smallPct = total>0?(smallCnt/total*100):0;
+
+        document.getElementById('vCount').innerHTML = total.toLocaleString()+'<span style="font-size:0.9rem;color:var(--muted)"> 회</span>';
+        const qM = (totalQty/1e6); 
+        document.getElementById('vQty').innerHTML = (qM>=1 ? qM.toFixed(1)+'M' : Math.round(totalQty).toLocaleString())+'<span style="font-size:0.9rem;color:var(--muted)"> 대</span>';
+        document.getElementById('vQtyFull').textContent = Math.round(totalQty).toLocaleString()+'대';
+        document.getElementById('vDaily').innerHTML = dailyAvg.toFixed(1)+'<span style="font-size:0.9rem;color:var(--muted)"> 회/일</span>';
+        document.getElementById('vSmall').innerHTML = smallPct.toFixed(1)+'<span style="font-size:0.9rem;color:var(--muted)">%</span>';
+
+        // Group by year
+        const byYear = {};
+        data.forEach(r => {
+            if(!byYear[r.yr]) byYear[r.yr]={rows:[],dates:new Set(),models:new Set(),custs:{},divs:{}};
+            const y=byYear[r.yr]; y.rows.push(r); y.dates.add(r.d); y.models.add(r.m);
+            if(!y.custs[r.c]) y.custs[r.c]={cnt:0,qty:0};
+            y.custs[r.c].cnt++; y.custs[r.c].qty+=r.q;
+            if(!y.divs[r.dv]) y.divs[r.dv]={cnt:0,qty:0};
+            y.divs[r.dv].cnt++; y.divs[r.dv].qty+=r.q;
+        });
+        const years = Object.keys(byYear).sort();
+
+        // Chart 1: Yearly total
+        const allCusts = {};
+        data.forEach(r => allCusts[r.c]=(allCusts[r.c]||0)+1);
+        chYearly.data.labels=years.map(y=>y+'년');
+        chYearly.data.datasets=[
+            {label:'투입 횟수',data:years.map(y=>byYear[y].rows.length),backgroundColor:'rgba(59,130,246,0.7)',borderRadius:8,yAxisID:'y',order:2},
+            {label:'일평균 투입(회/일)',type:'line',data:years.map(y=>(byYear[y].rows.length/(byYear[y].dates.size||1)).toFixed(1)),borderColor:'#ef4444',backgroundColor:'#ef4444',borderWidth:3,borderDash:[6,4],pointRadius:6,pointBackgroundColor:'#ef4444',yAxisID:'y1',order:1}
+        ];
+        chYearly.update();
+
+        // Chart 2: Lot distribution
+        const sam=data.filter(r=>r.tier==='SAM').length, sml=data.filter(r=>r.tier==='SML').length, med=data.filter(r=>r.tier==='MED').length, lrg=data.filter(r=>r.tier==='LRG').length;
+        chLot.data.labels=['샘플(<100)','소량(100~999)','중량(1K~5K)','대량(5K+)'];
+        chLot.data.datasets=[{data:[sam,sml,med,lrg],backgroundColor:['#ef4444','#f59e0b','#3b82f6','#10b981'],borderWidth:0}];
+        chLot.update();
+
+        // Chart 3: Division
+        const divData = {};
+        data.forEach(r => { if(!divData[r.dv]) divData[r.dv]={cnt:0,qty:0}; divData[r.dv].cnt++; divData[r.dv].qty+=r.q; });
+        const divNames = Object.keys(divData).sort((a,b)=>divData[b].cnt-divData[a].cnt);
+        chDiv.data.labels=divNames;
+        chDiv.data.datasets=[
+            {label:'투입 횟수',data:divNames.map(d=>divData[d].cnt),backgroundColor:divNames.map((_,i)=>COLORS[i]),borderRadius:6},
+        ];
+        chDiv.update();
+
+        // Chart 4: Customer top 7
+        const custSorted = Object.entries(allCusts).sort((a,b)=>b[1]-a[1]).slice(0,7);
+        chCust.data.labels=custSorted.map(e=>e[0]);
+        chCust.data.datasets=[{label:'투입 횟수',data:custSorted.map(e=>e[1]),backgroundColor:custSorted.map((_,i)=>COLORS[i]),borderRadius:6}];
+        chCust.update();
+
+        // Chart 5: Monthly
+        const byMonth = {};
+        data.forEach(r => { byMonth[r.mo]=(byMonth[r.mo]||0)+1; });
+        const months = Object.keys(byMonth).sort();
+        chMonthly.data.labels=months.map(m=>{const p=m.split('-');return p[0].substring(2)+'.'+p[1];});
+        chMonthly.data.datasets=[{label:'월별 투입',data:months.map(m=>byMonth[m]),borderColor:'#3b82f6',backgroundColor:'rgba(59,130,246,0.1)',borderWidth:2,pointRadius:2,fill:true,tension:0.3}];
+        chMonthly.update();
+
+        // Table 1: Yearly summary
+        if(years.length) {
+            let h='<table><thead><tr><th>구분</th>'+years.map(y=>'<th>'+y+'년</th>').join('')+'</tr></thead><tbody>';
+            const defs=[
+                {t:'투입 횟수',u:'회',f:y=>byYear[y].rows.length},
+                {t:'운영 모델 수',u:'종',f:y=>byYear[y].models.size},
+                {t:'총 생산 수량',u:'대',f:y=>Math.round(byYear[y].rows.reduce((s,r)=>s+r.q,0))},
+                {t:'투입당 평균',u:'대',f:y=>Math.round(byYear[y].rows.reduce((s,r)=>s+r.q,0)/byYear[y].rows.length)},
+                {t:'가동일수',u:'일',f:y=>byYear[y].dates.size},
+                {t:'일평균 투입',u:'회',f:y=>(byYear[y].rows.length/(byYear[y].dates.size||1)).toFixed(1)},
+            ];
+            defs.forEach((d,i)=>{
+                const cls = i===5?' class="hl"':'';
+                h+='<tr'+cls+'><td>'+d.t+'</td>'+years.map(y=>'<td>'+d.f(y).toLocaleString()+d.u+'</td>').join('')+'</tr>';
+            });
+            h+='</tbody></table>';
+            document.getElementById('t1').innerHTML=h;
+        }
+
+        // Table 2: Lot buckets
+        const buckets=[{l:'샘플(<100)',f:r=>r.q<100},{l:'소량(100~999)',f:r=>r.q>=100&&r.q<1000},{l:'중량(1K~5K)',f:r=>r.q>=1000&&r.q<5000},{l:'대량(5K+)',f:r=>r.q>=5000}];
+        if(years.length) {
+            let h='<table><thead><tr><th>구간</th>'+years.map(y=>'<th colspan="2">'+y+'년</th>').join('')+'</tr><tr>'+years.map(()=>'<th style="background:#0f3869">횟수</th><th style="background:#0f3869">비중</th>').join('')+'</tr></thead><tbody>';
+            buckets.forEach(b=>{
+                h+='<tr><td>'+b.l+'</td>';
+                years.forEach(y=>{
+                    const cnt=byYear[y].rows.filter(b.f).length;
+                    const pct=(cnt/byYear[y].rows.length*100).toFixed(1);
+                    h+='<td>'+cnt.toLocaleString()+'회</td><td>'+pct+'%</td>';
+                });
+                h+='</tr>';
+            });
+            h+='<tr class="hl"><td>소량이하</td>';
+            years.forEach(y=>{
+                const cnt=byYear[y].rows.filter(r=>r.q<1000).length;
+                const pct=(cnt/byYear[y].rows.length*100).toFixed(1);
+                h+='<td>'+cnt.toLocaleString()+'회</td><td>'+pct+'%</td>';
+            });
+            h+='</tr></tbody></table>';
+            document.getElementById('t2').innerHTML=h;
+        }
+
+        // Table 3: Division
+        let h3='<table><thead><tr><th>사업부</th><th>투입 횟수</th><th>총 생산수량</th><th>투입당 평균</th></tr></thead><tbody>';
+        divNames.forEach(d=>{
+            const v=divData[d];
+            const cls=v.cnt>0&&Math.round(v.qty/v.cnt)<2000?' class="hl"':'';
+            h3+='<tr'+cls+'><td>'+d+'</td><td>'+v.cnt.toLocaleString()+'회</td><td>'+Math.round(v.qty).toLocaleString()+'대</td><td>'+Math.round(v.qty/v.cnt).toLocaleString()+'대</td></tr>';
+        });
+        h3+='</tbody></table>';
+        document.getElementById('t3').innerHTML=h3;
+
+        // Table 4: Customer top
+        const custAll = {};
+        data.forEach(r=>{
+            if(!custAll[r.c]) custAll[r.c]={cnt:0,qty:0,models:new Set()};
+            custAll[r.c].cnt++; custAll[r.c].qty+=r.q; custAll[r.c].models.add(r.m);
+        });
+        const cSort = Object.entries(custAll).sort((a,b)=>b[1].cnt-a[1].cnt).slice(0,10);
+        let h4='<table><thead><tr><th>고객사</th><th>투입횟수</th><th>총생산수량</th><th>투입당평균</th><th>모델수</th></tr></thead><tbody>';
+        cSort.forEach(([c,v])=>{
+            const cls=Math.round(v.qty/v.cnt)<1200?' class="hl"':'';
+            h4+='<tr'+cls+'><td>'+c+'</td><td>'+v.cnt.toLocaleString()+'회</td><td>'+Math.round(v.qty).toLocaleString()+'대</td><td>'+Math.round(v.qty/v.cnt).toLocaleString()+'대</td><td>'+v.models.size+'종</td></tr>';
+        });
+        h4+='</tbody></table>';
+        document.getElementById('t4').innerHTML=h4;
+
+        // Table 5: Small Lot (100~999) Model top 15
+        const smallLotData = data.filter(r => r.q >= 100 && r.q < 1000);
+        const slModel = {};
+        smallLotData.forEach(r=>{
+            if(!slModel[r.m]) slModel[r.m]={cnt:0,qty:0,custs:{}};
+            slModel[r.m].cnt++; slModel[r.m].qty+=r.q;
+            slModel[r.m].custs[r.c]=(slModel[r.m].custs[r.c]||0)+1;
+        });
+        const slSort = Object.entries(slModel).sort((a,b)=>b[1].cnt-a[1].cnt).slice(0,15);
+        const slTotal = smallLotData.length;
+        let h5='<div style="font-size:0.75rem;color:var(--warning);margin-bottom:0.5rem;">⚠ 해당 구간 총 '+slTotal.toLocaleString()+'회 (필터 기준)</div>';
+        h5+='<table><thead><tr><th>#</th><th>모델명</th><th>투입횟수</th><th>총수량</th><th>평균Lot</th><th>주요고객사</th></tr></thead><tbody>';
+        slSort.forEach(([m,v],i)=>{
+            const topCust = Object.entries(v.custs).sort((a,b)=>b[1]-a[1])[0];
+            const custName = topCust ? topCust[0] : '-';
+            h5+='<tr><td>'+(i+1)+'</td><td style="text-align:left">'+m+'</td><td>'+v.cnt.toLocaleString()+'회</td><td>'+Math.round(v.qty).toLocaleString()+'대</td><td>'+Math.round(v.qty/v.cnt).toLocaleString()+'대</td><td>'+custName+'</td></tr>';
+        });
+        h5+='</tbody></table>';
+        document.getElementById('t5').innerHTML=h5;
+    }
+
+    // Initial render
+    applyFilters();
+    </script>
+</body>
+</html>
