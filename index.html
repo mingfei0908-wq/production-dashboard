@@ -59,8 +59,41 @@
         .insight-box h3 { color:var(--accent2); margin-bottom:0.6rem; font-size:0.95rem; }
         .ins { display:flex; gap:0.6rem; margin-bottom:0.35rem; font-size:0.8rem; }
         .ins-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.2rem; }
-        @media(max-width:1024px){ .mc{grid-column:span 6;} .cc6,.tc6{grid-column:span 12;} }
-        @media(max-width:768px){ .mc{grid-column:span 12;} .ins-grid{grid-template-columns:1fr;} }
+        /* December 2025 Analysis Section */
+        .dec-section { margin-top:1.5rem; padding-top:1.5rem; border-top:2px solid rgba(59,130,246,0.3); }
+        .dec-header { display:flex; align-items:center; gap:0.8rem; margin-bottom:1.5rem; flex-wrap:wrap; }
+        .dec-header h2 { font-size:1.3rem; font-weight:700; background:linear-gradient(135deg,#60a5fa,#a78bfa); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
+        .dec-badge { background:linear-gradient(135deg,rgba(59,130,246,0.2),rgba(167,139,250,0.2)); border:1px solid rgba(167,139,250,0.3); padding:0.2rem 0.7rem; border-radius:2rem; font-size:0.72rem; color:#a78bfa; font-weight:600; }
+        .dec-badge.warn { background:linear-gradient(135deg,rgba(239,68,68,0.2),rgba(245,158,11,0.2)); border-color:rgba(239,68,68,0.3); color:#fca5a5; }
+        .dec-kpi { display:grid; grid-template-columns:repeat(4,1fr); gap:0.8rem; margin-bottom:1.1rem; }
+        .dec-kpi-card { background:linear-gradient(135deg,rgba(30,41,59,0.9),rgba(30,41,59,0.6)); border:1px solid var(--border); border-radius:1rem; padding:1.1rem; text-align:center; position:relative; overflow:hidden; }
+        .dec-kpi-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; border-radius:1rem 1rem 0 0; }
+        .dec-kpi-card:nth-child(1)::before { background:linear-gradient(90deg,#ef4444,#f97316); }
+        .dec-kpi-card:nth-child(2)::before { background:linear-gradient(90deg,#f59e0b,#eab308); }
+        .dec-kpi-card:nth-child(3)::before { background:linear-gradient(90deg,#3b82f6,#6366f1); }
+        .dec-kpi-card:nth-child(4)::before { background:linear-gradient(90deg,#10b981,#14b8a6); }
+        .dec-kpi-label { font-size:0.75rem; color:var(--muted); margin-bottom:0.4rem; font-weight:500; }
+        .dec-kpi-val { font-size:1.5rem; font-weight:700; }
+        .dec-kpi-sub { font-size:0.65rem; color:var(--muted); margin-top:0.2rem; }
+        .dec-charts { display:grid; grid-template-columns:1fr 1fr; gap:1.1rem; margin-bottom:1.1rem; }
+        .dec-tbl { margin-bottom:1.1rem; overflow-x:auto; }
+        .dec-tbl table { margin-bottom:0; }
+        .dec-insights { display:grid; grid-template-columns:repeat(3,1fr); gap:1.2rem; margin-top:1.5rem; }
+        .dec-ins { background:linear-gradient(135deg,rgba(30,41,59,0.9),rgba(30,41,59,0.6)); border-radius:1rem; padding:1.2rem 1.3rem; border:1px solid var(--border); border-left:8px solid; transition:transform 0.2s,box-shadow 0.2s; }
+        .dec-ins:hover { transform:translateY(-3px); box-shadow:0 12px 30px rgba(0,0,0,0.4); }
+        .dec-ins:nth-child(1) { border-left-color:#ef4444; }
+        .dec-ins:nth-child(2) { border-left-color:#f59e0b; }
+        .dec-ins:nth-child(3) { border-left-color:#3b82f6; }
+        .dec-ins-title { font-size:0.88rem; font-weight:700; margin-bottom:0.5rem; letter-spacing:-0.01em; }
+        .dec-ins-body { font-size:0.78rem; color:#cbd5e1; line-height:1.7; }
+        .dec-ins-body strong { color:#f8fafc; font-weight:700; }
+        .ctag { display:inline-block; padding:0.12rem 0.45rem; border-radius:0.3rem; font-size:0.65rem; font-weight:600; }
+        .ctag.s { background:rgba(239,68,68,0.2); color:#fca5a5; }
+        .ctag.m { background:rgba(245,158,11,0.2); color:#fcd34d; }
+        .ctag.sp { background:rgba(59,130,246,0.2); color:#93c5fd; }
+        .ctag.e { background:rgba(107,114,128,0.2); color:#d1d5db; }
+        @media(max-width:1024px){ .mc{grid-column:span 6;} .cc6,.tc6{grid-column:span 12;} .dec-kpi{grid-template-columns:repeat(2,1fr);} .dec-charts{grid-template-columns:1fr;} .dec-insights{grid-template-columns:1fr;} .loss-kpi-grid{grid-template-columns:repeat(2,1fr)!important;} .loss-detail-grid{grid-template-columns:1fr!important;} .loss-insight-grid{grid-template-columns:1fr!important;} }
+        @media(max-width:768px){ .mc{grid-column:span 12;} .ins-grid{grid-template-columns:1fr;} .dec-kpi{grid-template-columns:1fr;} .loss-kpi-grid{grid-template-columns:1fr!important;} }
         footer { text-align:center; color:var(--muted); font-size:0.7rem; padding:0.8rem 0; }
     </style>
 </head>
@@ -145,6 +178,390 @@
             </div>
         </div>
     </div>
+
+    <!-- ==================== 25년 12월 소Lot 원인 상세 분석 ==================== -->
+    <div class="dec-section">
+        <div class="dec-header">
+            <h2>📊 25년 12월 소Lot 원인 상세 분석</h2>
+            <span class="dec-badge">총 475건 투입 · 175개 모델 기준</span>
+            <span class="dec-badge warn">소lot 원인 모델 107건 (61.1%)</span>
+        </div>
+
+        <!-- ===== KPI: 모델별 원인 분석 (비고.1) ===== -->
+        <div class="dec-kpi" style="grid-template-columns:repeat(5,1fr);">
+            <div class="dec-kpi-card">
+                <div class="dec-kpi-label">🟢 정상 생산</div>
+                <div class="dec-kpi-val" style="color:#10b981;">68개</div>
+                <div class="dec-kpi-sub">투입횟수 195회 · 소lot 13회</div>
+            </div>
+            <div class="dec-kpi-card">
+                <div class="dec-kpi-label">🔴 영업 소lot</div>
+                <div class="dec-kpi-val" style="color:#ef4444;">56개</div>
+                <div class="dec-kpi-sub">투입횟수 91회 · 소lot 82회</div>
+            </div>
+            <div class="dec-kpi-card">
+                <div class="dec-kpi-label">🟡 원자재 기준 생산</div>
+                <div class="dec-kpi-val" style="color:#f59e0b;">22개</div>
+                <div class="dec-kpi-sub">투입횟수 93회 · 소lot 34회</div>
+            </div>
+            <div class="dec-kpi-card">
+                <div class="dec-kpi-label">🔵 샘플 생산</div>
+                <div class="dec-kpi-val" style="color:#3b82f6;">14개</div>
+                <div class="dec-kpi-sub">투입횟수 35회 · 소lot 24회</div>
+            </div>
+            <div class="dec-kpi-card">
+                <div class="dec-kpi-label">🟠 기타 (긴급/몰딩/단종/재작업)</div>
+                <div class="dec-kpi-val" style="color:#f97316;">15개</div>
+                <div class="dec-kpi-sub">투입횟수 61회 · 소lot 23회</div>
+            </div>
+        </div>
+
+        <!-- ===== Charts ===== -->
+        <div class="dec-charts">
+            <div class="card">
+                <div class="card-h">모델별 소Lot 원인 분포 (비고.1 기준)</div>
+                <div style="height:300px; position:relative;"><canvas id="decCauseChart"></canvas></div>
+            </div>
+            <div class="card">
+                <div class="card-h">고객사별 원인별 모델 수 분석</div>
+                <div style="height:300px; position:relative;"><canvas id="decCustCauseChart"></canvas></div>
+            </div>
+        </div>
+
+        <!-- ===== 모델별 원인 분석 테이블 (비고.1) ===== -->
+        <div class="card" style="margin-bottom:1.1rem;">
+            <div class="card-h">📋 모델별 원인 분석 (비고.1 기준 · 175개 모델)</div>
+            <div class="dec-tbl">
+                <table>
+                    <thead>
+                        <tr><th>원인 구분</th><th>성격</th><th>모델 수</th><th>비중</th><th>투입횟수 합</th><th>평균 투입</th><th>소lot 합</th><th>계획 합계</th><th>실적 합계</th><th>주요 고객사</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="color:#10b981;font-weight:600;">정상</td>
+                            <td style="color:#10b981;">✅ 정상 생산</td>
+                            <td>68개</td><td>38.9%</td>
+                            <td>195회</td><td>2.9</td><td style="color:#10b981;">13회</td>
+                            <td>782,576</td><td>802,792</td>
+                            <td style="text-align:left;">Coway(33) · VD(15) · 대덕(9) · 생활가전(7) · HP(2)</td>
+                        </tr>
+                        <tr>
+                            <td><span class="ctag s">영업 소lot</span></td>
+                            <td style="color:#fca5a5;">⚠ 소lot 직접 원인</td>
+                            <td>56개</td><td style="color:#ef4444;font-weight:700;">32.0%</td>
+                            <td>91회</td><td>1.6</td><td style="color:#ef4444;font-weight:700;">82회</td>
+                            <td>63,106</td><td>60,452</td>
+                            <td style="text-align:left;">Coway(23) · VD(12) · HP(9) · 대덕(8) · 생활가전(4)</td>
+                        </tr>
+                        <tr>
+                            <td><span class="ctag m">원자재 기준 생산</span></td>
+                            <td style="color:#fcd34d;">⚠ 소lot 직접 원인</td>
+                            <td>22개</td><td style="color:#f59e0b;font-weight:700;">12.6%</td>
+                            <td>93회</td><td>4.2</td><td style="color:#f59e0b;font-weight:700;">34회</td>
+                            <td>190,887</td><td style="color:#fcd34d;">157,551</td>
+                            <td style="text-align:left;">Coway(10) · VD(5) · HP(4) · 대덕(2) · 한화비전(1)</td>
+                        </tr>
+                        <tr>
+                            <td><span class="ctag sp">샘플</span></td>
+                            <td style="color:#93c5fd;">⚠ 소lot 원인</td>
+                            <td>14개</td><td>8.0%</td>
+                            <td>35회</td><td>2.5</td><td>24회</td>
+                            <td>44,078</td><td>58,353</td>
+                            <td style="text-align:left;">VD(6) · 대덕(3) · HP(2) · 생활가전(2) · Coway(1)</td>
+                        </tr>
+                        <tr>
+                            <td><span class="ctag e" style="background:rgba(249,115,22,0.2);color:#fdba74;">고객 긴급 요청</span></td>
+                            <td style="color:#fdba74;">⚠ 비정상 투입</td>
+                            <td>6개</td><td>3.4%</td>
+                            <td>28회</td><td>4.7</td><td>8회</td>
+                            <td>55,678</td><td>66,448</td>
+                            <td style="text-align:left;">Coway(4) · VD(2)</td>
+                        </tr>
+                        <tr>
+                            <td><span class="ctag e">몰딩제품 생산수량 조정</span></td>
+                            <td style="color:#d1d5db;">생산 조건</td>
+                            <td>6개</td><td>3.4%</td>
+                            <td>30회</td><td>5.0</td><td>13회</td>
+                            <td>43,127</td><td>37,754</td>
+                            <td style="text-align:left;">Coway(5) · HP(1)</td>
+                        </tr>
+                        <tr>
+                            <td><span class="ctag e">단종</span></td>
+                            <td style="color:#d1d5db;">단종 소진</td>
+                            <td>2개</td><td>1.1%</td>
+                            <td>2회</td><td>1.0</td><td>2회</td>
+                            <td>720</td><td>732</td>
+                            <td style="text-align:left;">VD(2)</td>
+                        </tr>
+                        <tr>
+                            <td><span class="ctag e">재작업</span></td>
+                            <td style="color:#d1d5db;">품질 이슈</td>
+                            <td>1개</td><td>0.6%</td>
+                            <td>1회</td><td>1.0</td><td>0회</td>
+                            <td>0</td><td>2,718</td>
+                            <td style="text-align:left;">VD(1)</td>
+                        </tr>
+                        <tr style="font-weight:600;background:var(--thead);color:white;">
+                            <td>합계</td><td>-</td>
+                            <td>175개</td><td>100%</td>
+                            <td>475회</td><td>2.7</td><td>176회</td>
+                            <td>1,180,172</td><td>1,186,800</td>
+                            <td style="text-align:left;">-</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ===== 고객사별 최종 요약 테이블 ===== -->
+        <div class="card" style="margin-bottom:1.1rem;">
+            <div class="card-h">📋 고객사별 투입 현황 요약</div>
+            <div class="dec-tbl">
+                <table>
+                    <thead>
+                        <tr><th>고객사</th><th>총 투입횟수</th><th>모델 수</th><th>모델당 투입 빈도</th><th>소lot(1K미만) 비율</th><th>종합 평가</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="font-weight:700;">VD</td>
+                            <td>197회</td><td>50개</td><td style="color:#10b981;">3.94</td>
+                            <td style="text-align:center;color:#10b981;">25.4%</td><td style="text-align:left;color:#10b981;">양호 · 대량 위주 (25W/35W, UHD)</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight:700;">Coway</td>
+                            <td>165회</td><td>68개</td><td style="color:#ef4444;font-weight:700;">2.43</td>
+                            <td style="text-align:center;color:#f59e0b;font-weight:700;">41.2%</td><td style="text-align:left;color:#ef4444;">⚠ 모델 많고 빈도 낮음 · 원자재+영업 이중고</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight:700;">HP</td>
+                            <td>40회</td><td>27개</td><td style="color:#f59e0b;font-weight:700;">1.48</td>
+                            <td style="text-align:center;color:#ef4444;font-weight:700;">67.5%</td><td style="text-align:left;color:#f59e0b;">⚠ 모델당 투입 최저 · 소lot 집중</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight:700;">대덕</td>
+                            <td>35회</td><td>21개</td><td style="color:#f59e0b;">1.67</td>
+                            <td style="text-align:center;color:#ef4444;font-weight:700;">60.0%</td><td style="text-align:left;color:#f59e0b;">⚠ 내장형SMPS 전담 · 소량 다품종</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight:700;">생활가전</td>
+                            <td>34회</td><td>9개</td><td style="color:#10b981;">3.78</td>
+                            <td style="text-align:center;color:#10b981;">26.5%</td><td style="text-align:left;">양호 · 소수 모델 반복 생산</td>
+                        </tr>
+                        <tr>
+                            <td>한화비전</td>
+                            <td>3회</td><td>1개</td><td>3.00</td>
+                            <td style="text-align:center;">33.3%</td><td style="text-align:left;">소규모</td>
+                        </tr>
+                        <tr>
+                            <td>경동나비엔</td>
+                            <td>1회</td><td>0개</td><td>-</td>
+                            <td style="text-align:center;color:#10b981;">0.0%</td><td style="text-align:left;">신규/미미</td>
+                        </tr>
+                        <tr style="font-weight:600;background:var(--thead);color:white;">
+                            <td>합계</td>
+                            <td>475회</td><td>175개</td><td>2.70</td>
+                            <td style="text-align:center;">37.1%</td><td style="text-align:left;">소lot 176회 / 전체 475회</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ===== Insight Cards ===== -->
+        <div class="dec-insights">
+            <div class="dec-ins">
+                <div class="dec-ins-title" style="color:#ef4444;">🔴 가장 큰 문제: 고객 주문량 자체가 적음</div>
+                <div class="dec-ins-body">
+                    12월 생산 모델 175개 중 <strong>56개(32%)</strong>가 고객사의 출하 요청 수량이 적어 소량 생산(1,000개 미만)이 발생했습니다.<br>
+                    이 56개 모델의 생산 91회 중 <strong>82회(90%)</strong>가 소량 투입으로, 라인 전환 등 비효율이 집중됩니다.<br>
+                    <strong>💡 개선안:</strong> Coway(23건)·VD(12건)·HP(9건) 대상으로 최소 출하 Lot 기준을 협의하여 주문 통합 필요.
+                </div>
+            </div>
+            <div class="dec-ins">
+                <div class="dec-ins-title" style="color:#f59e0b;">🟡 두 번째 문제: 원자재 부족으로 계획대로 못 만듦</div>
+                <div class="dec-ins-body">
+                    원자재가 부족해 계획 수량을 채우지 못하고 있는 재고만큼만 생산한 모델이 <strong>22개</strong>에 달합니다.<br>
+                    계획 대비 실적 달성률이 <strong>82.5%</strong>에 그쳐, 나머지 17.5%는 미생산 상태입니다.<br>
+                    <strong>💡 개선안:</strong> Coway(10건)·VD(5건)·HP(4건) 등 주요 고객사의 원자재 선행 확보 체계 구축 필요.
+                </div>
+            </div>
+            <div class="dec-ins">
+                <div class="dec-ins-title" style="color:#3b82f6;">🔵 종합: 전체 모델의 61%가 소량 생산 원인 보유</div>
+                <div class="dec-ins-body">
+                    전체 소lot 176회 중 <strong>163회(93%)</strong>가 특정 원인이 있는 모델에서 발생합니다.<br>
+                    원인 없이 정상 생산되는 모델에서는 소lot이 거의 없으므로, <strong>원인이 명확한 107개 모델만 집중 관리</strong>하면 됩니다.<br>
+                    <strong>💡 개선안:</strong> HP·Coway 주문 통합 협상 + 원자재 사전 확보를 동시에 추진하면 소lot 50% 이상 감축 가능.
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== 손실 금액 산출 섹션 ===== -->
+        <div style="margin-top:2.5rem; padding-top:2rem; border-top:2px solid rgba(239,68,68,0.4);">
+            <div style="display:flex; align-items:center; gap:0.8rem; margin-bottom:1.5rem; flex-wrap:wrap;">
+                <h2 style="font-size:1.3rem; font-weight:700; background:linear-gradient(135deg,#ef4444,#f97316); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;">💰 25년 12월 소Lot 교체에 의한 손실 금액 산출</h2>
+                <span class="dec-badge warn">소Lot 교체 176회 기준</span>
+                <span class="dec-badge" style="background:linear-gradient(135deg,rgba(239,68,68,0.2),rgba(249,115,22,0.2)); border-color:rgba(249,115,22,0.3); color:#fdba74;">25년 12월 1개월 실적 기반</span>
+            </div>
+
+            <!-- 손실 금액 KPI -->
+            <div class="loss-kpi-grid" style="display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; margin-bottom:1.5rem;">
+                <div style="background:linear-gradient(135deg,rgba(239,68,68,0.15),rgba(239,68,68,0.05)); border:1px solid rgba(239,68,68,0.3); border-radius:1rem; padding:1.3rem; text-align:center; position:relative; overflow:hidden;">
+                    <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#ef4444,#f97316);border-radius:1rem 1rem 0 0;"></div>
+                    <div style="font-size:0.72rem; color:var(--muted); margin-bottom:0.4rem; font-weight:600;">💴 월간 총 손실 (엔화)</div>
+                    <div style="font-size:1.6rem; font-weight:700; color:#ef4444;">¥45,500</div>
+                    <div style="font-size:0.65rem; color:var(--muted); margin-top:0.3rem;">176회 × 420분 × 0.61553</div>
+                </div>
+                <div style="background:linear-gradient(135deg,rgba(249,115,22,0.15),rgba(249,115,22,0.05)); border:1px solid rgba(249,115,22,0.3); border-radius:1rem; padding:1.3rem; text-align:center; position:relative; overflow:hidden;">
+                    <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#f97316,#f59e0b);border-radius:1rem 1rem 0 0;"></div>
+                    <div style="font-size:0.72rem; color:var(--muted); margin-bottom:0.4rem; font-weight:600;">💵 월간 총 손실 (원화)</div>
+                    <div style="font-size:1.6rem; font-weight:700; color:#f97316;">₩10,010,000</div>
+                    <div style="font-size:0.65rem; color:var(--muted); margin-top:0.3rem;">환율 ¥1 = ₩220 적용</div>
+                </div>
+                <div style="background:linear-gradient(135deg,rgba(245,158,11,0.15),rgba(245,158,11,0.05)); border:1px solid rgba(245,158,11,0.3); border-radius:1rem; padding:1.3rem; text-align:center; position:relative; overflow:hidden;">
+                    <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#f59e0b,#eab308);border-radius:1rem 1rem 0 0;"></div>
+                    <div style="font-size:0.72rem; color:var(--muted); margin-bottom:0.4rem; font-weight:600;">📅 연간 환산 손실 (원화)</div>
+                    <div style="font-size:1.6rem; font-weight:700; color:#f59e0b;">₩120,120,000</div>
+                    <div style="font-size:0.65rem; color:var(--muted); margin-top:0.3rem;">월간 × 12개월 환산</div>
+                </div>
+                <div style="background:linear-gradient(135deg,rgba(139,92,246,0.15),rgba(139,92,246,0.05)); border:1px solid rgba(139,92,246,0.3); border-radius:1rem; padding:1.3rem; text-align:center; position:relative; overflow:hidden;">
+                    <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#8b5cf6,#a78bfa);border-radius:1rem 1rem 0 0;"></div>
+                    <div style="font-size:0.72rem; color:var(--muted); margin-bottom:0.4rem; font-weight:600;">⏱ 총 인시 손실</div>
+                    <div style="font-size:1.6rem; font-weight:700; color:#8b5cf6;">420분</div>
+                    <div style="font-size:0.65rem; color:var(--muted); margin-top:0.3rem;">1회 교체당 · 3개 공정 합산</div>
+                </div>
+            </div>
+
+            <!-- 공정별 손실 금액 테이블 -->
+            <div class="card" style="margin-bottom:1.5rem;">
+                <div class="card-h">📋 공정별 라인 교체 손실 상세 내역 (25년 12월 · 소Lot 교체 176회 기준)</div>
+                <div class="dec-tbl">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>공정</th>
+                                <th>평균 라인<br>교체시간 (분)</th>
+                                <th>작업자수</th>
+                                <th>자재준비<br>품질검사</th>
+                                <th>TOTAL<br>(인원)</th>
+                                <th>인시손실<br>(분/회)</th>
+                                <th>손실금액<br>(¥/월)</th>
+                                <th>손실금액<br>(₩/월)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="font-weight:700; color:#60a5fa;">AI</td>
+                                <td>20</td>
+                                <td>3명</td>
+                                <td>1명</td>
+                                <td style="font-weight:600;">4명</td>
+                                <td style="color:#f59e0b; font-weight:600;">80분</td>
+                                <td style="color:#fca5a5;">¥8,667</td>
+                                <td style="color:#ef4444; font-weight:600;">₩1,906,667</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight:700; color:#60a5fa;">SMD</td>
+                                <td>50</td>
+                                <td>1명</td>
+                                <td>1명</td>
+                                <td style="font-weight:600;">2명</td>
+                                <td style="color:#f59e0b; font-weight:600;">100분</td>
+                                <td style="color:#fca5a5;">¥10,833</td>
+                                <td style="color:#ef4444; font-weight:600;">₩2,383,333</td>
+                            </tr>
+                            <tr class="hl">
+                                <td style="font-weight:700; color:#ef4444;">수삽</td>
+                                <td>20</td>
+                                <td style="color:#ef4444; font-weight:700;">10명</td>
+                                <td>2명</td>
+                                <td style="font-weight:700; color:#ef4444;">12명</td>
+                                <td style="color:#ef4444; font-weight:700;">240분</td>
+                                <td style="color:#ef4444; font-weight:700;">¥26,000</td>
+                                <td style="color:#ef4444; font-weight:700;">₩5,720,000</td>
+                            </tr>
+
+                            <tr style="font-weight:700; background:var(--thead); color:white;">
+                                <td>TOTAL</td>
+                                <td>90분</td>
+                                <td>14명</td>
+                                <td>4명</td>
+                                <td>18명</td>
+                                <td style="color:#fcd34d;">420분</td>
+                                <td style="color:#fcd34d;">¥45,500</td>
+                                <td style="color:#fcd34d;">₩10,010,000</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 산출 근거 & 차트 영역 -->
+            <div class="loss-detail-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:1.2rem; margin-bottom:1.5rem;">
+                <!-- 산출 근거 카드 -->
+                <div class="card">
+                    <div class="card-h">📐 손실 금액 산출 근거</div>
+                    <div style="padding:0.5rem 0;">
+                        <div style="display:flex; flex-direction:column; gap:0.9rem;">
+                            <div style="display:flex; align-items:flex-start; gap:0.8rem;">
+                                <span style="background:rgba(59,130,246,0.2); color:#60a5fa; padding:0.3rem 0.6rem; border-radius:0.5rem; font-size:0.7rem; font-weight:600; white-space:nowrap;">산출식</span>
+                                <div style="font-size:0.78rem; color:#cbd5e1; line-height:1.8;">
+                                    <strong style="color:#f8fafc;">인시손실(분/회)</strong> = 평균 교체시간 × TOTAL 인원<br>
+                                    <strong style="color:#f8fafc;">손실금액(¥)</strong> = 인시손실 × 분당임율 × 소Lot 교체 횟수<br>
+                                    <strong style="color:#f8fafc;">손실금액(₩)</strong> = 손실금액(¥) × 환율
+                                </div>
+                            </div>
+                            <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.6rem;">
+                                <div style="background:rgba(15,23,42,0.6); border:1px solid var(--border); border-radius:0.7rem; padding:0.7rem; text-align:center;">
+                                    <div style="font-size:0.65rem; color:var(--muted); margin-bottom:0.2rem;">분당임율 (¥/분)</div>
+                                    <div style="font-size:1.1rem; font-weight:700; color:#60a5fa;">0.61553</div>
+                                </div>
+                                <div style="background:rgba(15,23,42,0.6); border:1px solid var(--border); border-radius:0.7rem; padding:0.7rem; text-align:center;">
+                                    <div style="font-size:0.65rem; color:var(--muted); margin-bottom:0.2rem;">환율 (¥→₩)</div>
+                                    <div style="font-size:1.1rem; font-weight:700; color:#60a5fa;">220</div>
+                                </div>
+                                <div style="background:rgba(15,23,42,0.6); border:1px solid var(--border); border-radius:0.7rem; padding:0.7rem; text-align:center;">
+                                    <div style="font-size:0.65rem; color:var(--muted); margin-bottom:0.2rem;">소Lot 교체 횟수</div>
+                                    <div style="font-size:1.1rem; font-weight:700; color:#ef4444;">176회</div>
+                                </div>
+                                <div style="background:rgba(15,23,42,0.6); border:1px solid var(--border); border-radius:0.7rem; padding:0.7rem; text-align:center;">
+                                    <div style="font-size:0.65rem; color:var(--muted); margin-bottom:0.2rem;">산출 기간</div>
+                                    <div style="font-size:1.1rem; font-weight:700; color:#10b981;">25.12 (1개월)</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 공정별 손실 비중 차트 -->
+                <div class="card">
+                    <div class="card-h">📊 공정별 손실 금액 비중</div>
+                    <div style="height:250px; position:relative;"><canvas id="lossProcessChart"></canvas></div>
+                </div>
+            </div>
+
+            <!-- 핵심 메시지 인사이트 카드 -->
+            <div class="loss-insight-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:1.2rem;">
+                <div style="background:linear-gradient(135deg,rgba(239,68,68,0.12),rgba(239,68,68,0.03)); border:1px solid rgba(239,68,68,0.3); border-radius:1rem; padding:1.3rem; border-left:8px solid #ef4444;">
+                    <div style="font-size:0.9rem; font-weight:700; color:#ef4444; margin-bottom:0.6rem;">🚨 수삽 공정 — 전체 손실의 57.1% 집중</div>
+                    <div style="font-size:0.78rem; color:#cbd5e1; line-height:1.8;">
+                        수삽 공정은 작업자 <strong style="color:#f8fafc;">10명 + 품질검사 2명 = 12명</strong>이 투입되어 1회 교체 시 <strong style="color:#fcd34d;">240분(인시)</strong>의 손실이 발생합니다.<br>
+                        월간 <strong style="color:#ef4444;">₩5,720,000</strong> · 연간 환산 약 <strong style="color:#ef4444;">₩68,640,000</strong>의 손실이며, 전체 공정 중 최대입니다.<br>
+                        <strong style="color:#10b981;">💡 개선안:</strong> 수삽 공정의 다품종 소량 모델 그룹핑 및 교체 순서 최적화로 교체 횟수 30% 절감 목표.
+                    </div>
+                </div>
+                <div style="background:linear-gradient(135deg,rgba(245,158,11,0.12),rgba(245,158,11,0.03)); border:1px solid rgba(245,158,11,0.3); border-radius:1rem; padding:1.3rem; border-left:8px solid #f59e0b;">
+                    <div style="font-size:0.9rem; font-weight:700; color:#f59e0b; margin-bottom:0.6rem;">📈 개선 시 기대효과</div>
+                    <div style="font-size:0.78rem; color:#cbd5e1; line-height:1.8;">
+                        소Lot 교체 176회 중 <strong style="color:#f8fafc;">85% 절감(150회 감축)</strong> 시 월간 <strong style="color:#10b981;">₩8,508,500</strong> 절약 가능합니다.<br>
+                        연간으로 환산하면 <strong style="color:#10b981;">약 ₩102,102,000</strong>의 비용 절감 효과가 기대됩니다.<br>
+                        <strong style="color:#60a5fa;">💡 핵심 전략:</strong> 영업 소lot(56개 모델) + 원자재 부족(22개 모델) 집중 관리로 교체 횟수를 근본적으로 감축.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
     <footer>심양팀 생산 투입 횟수 분석 대시보드 · 데이터 기준: 2023.01 ~ 2025.12</footer>
 
     <script src="data.js"></script>
@@ -179,7 +596,41 @@
     chLot = mkChart('chLot','doughnut',{data:{labels:[],datasets:[]},options:{responsive:true,maintainAspectRatio:false,cutout:'55%',plugins:{legend:{position:'bottom',labels:{boxWidth:10,padding:8,font:{size:10}}},tooltip:{callbacks:{label:ctx=>{const t=ctx.dataset.data.reduce((a,b)=>a+b,0);return ctx.label+': '+ctx.parsed.toLocaleString()+'회 ('+(ctx.parsed/t*100).toFixed(1)+'%)';}}}}}});
     chDiv = mkChart('chDiv','bar',{data:{labels:[],datasets:[]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{boxWidth:10}}}}});
     chCust = mkChart('chCust','bar',{data:{labels:[],datasets:[]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false}}}});
-    chMonthly = mkChart('chMonthly','line',{data:{labels:[],datasets:[]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{boxWidth:10}}},scales:{y:{beginAtZero:false}}}});
+    chMonthly = mkChart('chMonthly','line',{data:{labels:[],datasets:[]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{boxWidth:10}},tooltip:{
+        callbacks:{
+            title:ctx=>{const l=ctx[0]?.label||'';return l==='25.12'?'📊 25.12 정밀 분석 결과':l+' 투입 현황';},
+            label:ctx=>{return '투입 횟수: '+ctx.parsed.y+'회';},
+            afterBody:ctx=>{
+                const l=ctx[0]?.label||'';
+                if(l==='25.12') return [
+                    '',
+                    '━━━ 12월 소Lot 원인 분석 ━━━',
+                    '▸ 총 175개 모델 · 475회 투입',
+                    '▸ 소lot 176회 (37.1%)',
+                    '',
+                    '🔴 영업 소lot: 56개(32%) ← 최대 원인',
+                    '   고객 주문량 자체가 적어 소량 생산',
+                    '🟡 원자재 부족: 22개(12.6%)',
+                    '   계획 달성률 82.5%에 그침',
+                    '🔵 샘플: 14개(8.0%)',
+                    '',
+                    '⚡ 핵심: 107개 모델 집중 관리 시',
+                    '   소lot 50% 이상 감축 가능',
+                    '💡 Coway·HP 주문 통합 + 원자재 확보'
+                ];
+                return [];
+            }
+        },
+        bodyFont:{size:11},
+        titleFont:{size:12,weight:'bold'},
+        padding:12,
+        boxPadding:4,
+        displayColors:false,
+        backgroundColor:'rgba(15,23,42,0.95)',
+        borderColor:'rgba(59,130,246,0.5)',
+        borderWidth:1,
+        maxWidth:350
+    }},scales:{y:{beginAtZero:false}}}});
 
     function applyFilters() {
         const fy=document.getElementById('fYear').value;
@@ -264,8 +715,12 @@
         const byMonth = {};
         data.forEach(r => { byMonth[r.mo]=(byMonth[r.mo]||0)+1; });
         const months = Object.keys(byMonth).sort();
-        chMonthly.data.labels=months.map(m=>{const p=m.split('-');return p[0].substring(2)+'.'+p[1];});
-        chMonthly.data.datasets=[{label:'월별 투입',data:months.map(m=>byMonth[m]),borderColor:'#3b82f6',backgroundColor:'rgba(59,130,246,0.1)',borderWidth:2,pointRadius:2,fill:true,tension:0.3}];
+        const monthLabels = months.map(m=>{const p=m.split('-');return p[0].substring(2)+'.'+p[1];});
+        chMonthly.data.labels=monthLabels;
+        const pointColors = monthLabels.map(l=>l==='25.12'?'#ef4444':'#3b82f6');
+        const pointSizes = monthLabels.map(l=>l==='25.12'?8:2);
+        const pointBorders = monthLabels.map(l=>l==='25.12'?'#fca5a5':'#3b82f6');
+        chMonthly.data.datasets=[{label:'월별 투입',data:months.map(m=>byMonth[m]),borderColor:'#3b82f6',backgroundColor:'rgba(59,130,246,0.1)',borderWidth:2,pointRadius:pointSizes,pointBackgroundColor:pointColors,pointBorderColor:pointBorders,pointBorderWidth:monthLabels.map(l=>l==='25.12'?2:1),pointHoverRadius:monthLabels.map(l=>l==='25.12'?12:5),fill:true,tension:0.3}];
         chMonthly.update();
 
         // Table 1: Yearly summary
@@ -358,6 +813,86 @@
 
     // Initial render
     applyFilters();
+
+    // ===================== 25년 12월 상세 분석 차트 =====================
+    (function renderDecemberCharts() {
+        new Chart(document.getElementById('decCauseChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['정상 생산','영업 소lot','원자재 기준 생산','샘플','고객 긴급 요청','몰딩제품 조정','단종','재작업'],
+                datasets: [{ data:[68,56,22,14,6,6,2,1], backgroundColor:['#10b981','#ef4444','#f59e0b','#3b82f6','#f97316','#8b5cf6','#6366f1','#64748b'], borderWidth:2, borderColor:'#0f172a' }]
+            },
+            options: {
+                responsive:true, maintainAspectRatio:false, cutout:'55%',
+                plugins: {
+                    legend:{position:'right',labels:{boxWidth:10,padding:6,font:{size:10},color:'#94a3b8'}},
+                    tooltip:{callbacks:{label:ctx=>{const t=ctx.dataset.data.reduce((a,b)=>a+b,0);return ctx.label+': '+ctx.parsed+'건 ('+(ctx.parsed/t*100).toFixed(1)+'%)';}}}
+                }
+            }
+        });
+
+        new Chart(document.getElementById('decCustCauseChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Coway','VD','HP','대덕','생활가전','한화비전'],
+                datasets: [
+                    { label:'영업 소lot', data:[23,12,9,8,4,0], backgroundColor:'#ef4444' },
+                    { label:'원자재 기준 생산', data:[10,5,4,2,0,1], backgroundColor:'#f59e0b' },
+                    { label:'샘플', data:[1,6,2,3,2,0], backgroundColor:'#3b82f6' },
+                    { label:'고객 긴급 요청', data:[4,2,0,0,0,0], backgroundColor:'#f97316' },
+                    { label:'기타(몰딩/단종/재작업)', data:[5,3,1,0,0,0], backgroundColor:'#8b5cf6' }
+                ]
+            },
+            options: {
+                responsive:true, maintainAspectRatio:false, indexAxis:'y',
+                scales: {
+                    x:{stacked:true,grid:{color:'rgba(255,255,255,0.05)'},ticks:{color:'#94a3b8'}},
+                    y:{stacked:true,grid:{display:false},ticks:{color:'#e2e8f0',font:{weight:600}}}
+                },
+                plugins: {
+                    legend:{position:'top',labels:{boxWidth:10,padding:10,font:{size:10},color:'#94a3b8'}},
+                    tooltip:{callbacks:{label:ctx=>ctx.dataset.label+': '+ctx.parsed.x+'건'}}
+                }
+            }
+        });
+    })();
+
+    // ===================== 공정별 손실 금액 차트 =====================
+    (function renderLossChart() {
+        new Chart(document.getElementById('lossProcessChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['AI (₩1,906,667)','SMD (₩2,383,333)','수삽 (₩5,720,000)'],
+                datasets: [{
+                    data: [1906667, 2383333, 5720000],
+                    backgroundColor: ['#3b82f6','#8b5cf6','#ef4444'],
+                    borderWidth: 2,
+                    borderColor: '#0f172a',
+                    hoverOffset: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '55%',
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: { boxWidth: 12, padding: 8, font: { size: 10.5, weight: 500 }, color: '#94a3b8' }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: ctx => {
+                                const total = ctx.dataset.data.reduce((a,b) => a+b, 0);
+                                const pct = (ctx.parsed / total * 100).toFixed(1);
+                                return ctx.label.split(' (')[0] + ': ₩' + ctx.parsed.toLocaleString() + ' (' + pct + '%)';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    })();
     </script>
 </body>
 </html>
