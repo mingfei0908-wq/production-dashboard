@@ -419,13 +419,13 @@
                 </div>
                 <div style="background:linear-gradient(135deg,rgba(16,185,129,0.15),rgba(16,185,129,0.05)); border:1px solid rgba(16,185,129,0.3); border-radius:1rem; padding:1.1rem; text-align:center; position:relative; overflow:hidden;">
                     <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#10b981,#3b82f6);border-radius:1rem 1rem 0 0;"></div>
-                    <div style="font-size:0.72rem; color:var(--muted); margin-bottom:0.4rem; font-weight:600;">🎯 월간 기대 절감액 (50%)</div>
+                    <div style="font-size:0.72rem; color:var(--muted); margin-bottom:0.4rem; font-weight:600;">🎯 월간 기대 절감액 (<span id="lblPercentMonthly">50</span>%)</div>
                     <div style="font-size:1.6rem; font-weight:700; color:#10b981;" id="lblMonthlySavings">₩4,084,165</div>
                     <div style="font-size:0.65rem; color:var(--muted); margin-top:0.3rem;" id="lblSavingsSub">개선 모수 116회 중 58회 감축</div>
                 </div>
                 <div style="background:linear-gradient(135deg,rgba(139,92,246,0.15),rgba(139,92,246,0.05)); border:1px solid rgba(139,92,246,0.3); border-radius:1rem; padding:1.1rem; text-align:center; position:relative; overflow:hidden;">
                     <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#8b5cf6,#a78bfa);border-radius:1rem 1rem 0 0;"></div>
-                    <div style="font-size:0.72rem; color:var(--muted); margin-bottom:0.4rem; font-weight:600;">📅 연간 기대 절감액 (50%)</div>
+                    <div style="font-size:0.72rem; color:var(--muted); margin-bottom:0.4rem; font-weight:600;">📅 연간 기대 절감액 (<span id="lblPercentYearly">50</span>%)</div>
                     <div style="font-size:1.6rem; font-weight:700; color:#8b5cf6;" id="lblYearlySavings">₩49,009,976</div>
                     <div style="font-size:0.65rem; color:var(--muted); margin-top:0.3rem;">월간 절감액 × 12개월 환산</div>
                 </div>
@@ -954,6 +954,10 @@
         document.getElementById('lblTotalLossKrw').innerText = `₩${Math.round(totalLossKrw).toLocaleString()}`;
         document.getElementById('lblMonthlySavings').innerText = `₩${Math.round(totalMonthlySavings).toLocaleString()}`;
         document.getElementById('lblYearlySavings').innerText = `₩${Math.round(totalYearlySavings).toLocaleString()}`;
+        
+        const pctText = Math.round(improvementRate * 100);
+        document.getElementById('lblPercentMonthly').innerText = pctText;
+        document.getElementById('lblPercentYearly').innerText = pctText;
 
         // 인사이트 텍스트 업데이트
         document.getElementById('insSuLossMonthly').innerText = `₩${Math.round(suLossMonthly).toLocaleString()}`;
