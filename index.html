@@ -400,7 +400,7 @@
             <div style="display:flex; align-items:center; gap:0.8rem; margin-bottom:1.5rem; flex-wrap:wrap;">
                 <h2 style="font-size:1.3rem; font-weight:700; background:linear-gradient(135deg,#ef4444,#f59e0b); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;">💰 25년 12월 소Lot 교체 손실 및 비용 절감 시뮬레이터</h2>
                 <span class="dec-badge warn">소Lot 교체 176회 기준</span>
-                <span class="dec-badge" style="background:linear-gradient(135deg,rgba(16,185,129,0.2),rgba(59,130,246,0.2)); border-color:rgba(16,185,129,0.3); color:#10b981;">목표 개선율: 50% (58회 감축)</span>
+                <span class="dec-badge" style="background:linear-gradient(135deg,rgba(16,185,129,0.2),rgba(59,130,246,0.2)); border-color:rgba(16,185,129,0.3); color:#10b981;">목표 개선율: 50% (64.5회 감축)</span>
             </div>
 
             <!-- 시뮬레이터 주요 KPI -->
@@ -420,13 +420,13 @@
                 <div style="background:linear-gradient(135deg,rgba(16,185,129,0.15),rgba(16,185,129,0.05)); border:1px solid rgba(16,185,129,0.3); border-radius:1rem; padding:1.1rem; text-align:center; position:relative; overflow:hidden;">
                     <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#10b981,#3b82f6);border-radius:1rem 1rem 0 0;"></div>
                     <div style="font-size:0.72rem; color:var(--muted); margin-bottom:0.4rem; font-weight:600;">🎯 월간 기대 절감액 (<span id="lblPercentMonthly">50</span>%)</div>
-                    <div style="font-size:1.6rem; font-weight:700; color:#10b981;" id="lblMonthlySavings">₩4,084,165</div>
-                    <div style="font-size:0.65rem; color:var(--muted); margin-top:0.3rem;" id="lblSavingsSub">개선 모수 116회 중 58회 감축</div>
+                    <div style="font-size:1.6rem; font-weight:700; color:#10b981;" id="lblMonthlySavings">₩4,541,897</div>
+                    <div style="font-size:0.65rem; color:var(--muted); margin-top:0.3rem;" id="lblSavingsSub">개선 모수 129회 중 64.5회 감축</div>
                 </div>
                 <div style="background:linear-gradient(135deg,rgba(139,92,246,0.15),rgba(139,92,246,0.05)); border:1px solid rgba(139,92,246,0.3); border-radius:1rem; padding:1.1rem; text-align:center; position:relative; overflow:hidden;">
                     <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#8b5cf6,#a78bfa);border-radius:1rem 1rem 0 0;"></div>
                     <div style="font-size:0.72rem; color:var(--muted); margin-bottom:0.4rem; font-weight:600;">📅 연간 기대 절감액 (<span id="lblPercentYearly">50</span>%)</div>
-                    <div style="font-size:1.6rem; font-weight:700; color:#8b5cf6;" id="lblYearlySavings">₩49,009,976</div>
+                    <div style="font-size:1.6rem; font-weight:700; color:#8b5cf6;" id="lblYearlySavings">₩54,502,761</div>
                     <div style="font-size:0.65rem; color:var(--muted); margin-top:0.3rem;">월간 절감액 × 12개월 환산</div>
                 </div>
             </div>
@@ -486,7 +486,7 @@
                         </div>
                         <div>
                             <span style="font-size: 0.7rem; color: var(--muted); display: block; margin-bottom: 0.25rem; font-weight: 600;">개선 대상 모수 (회)</span>
-                            <input type="number" id="simTargetCount" value="116" step="1" style="width: 100%; background: var(--bg); border: 1px solid var(--border); color: white; padding: 0.35rem 0.5rem; border-radius: 0.25rem; font-size: 0.8rem; text-align: right;" onchange="recalculateSim()">
+                            <input type="number" id="simTargetCount" value="129" step="1" style="width: 100%; background: var(--bg); border: 1px solid var(--border); color: white; padding: 0.35rem 0.5rem; border-radius: 0.25rem; font-size: 0.8rem; text-align: right;" onchange="recalculateSim()">
                         </div>
                     </div>
                 </div>
@@ -506,13 +506,13 @@
                                     <strong style="color:#f8fafc;">회당 손실(￥)</strong> = 회당 인시손실 × 분당임률<br>
                                     <strong style="color:#f8fafc;">회당 손실(₩)</strong> = 회당 손실(￥) × 환율<br>
                                     <strong style="color:#f8fafc;">월 절감액(₩)</strong> = 감축 횟수 × 회당 손실(₩)<br>
-                                    <strong style="color:#f8fafc;">감축 횟수</strong> = 개선 대상 모수(116회) × 개선율(%)
+                                    <strong style="color:#f8fafc;">감축 횟수</strong> = 개선 대상 모수(129회) × 개선율(%)
                                 </div>
                             </div>
                             <div style="background:rgba(15,23,42,0.4); border:1px solid var(--border); border-radius:0.7rem; padding:0.8rem; font-size:0.75rem; line-height:1.7;">
-                                💡 **개선 대상 모수(116회) 산출 근거:**<br>
-                                - 25년 12월 전체 소Lot 교체 176회 중 샘플(24회), 정상(13회), 몰딩 조정(13회), 긴급(8회), 단종(2회) 등 불가피한 60회 제외.<br>
-                                - **통제 가능한 영업 소Lot(82회) + 원자재 기준 생산(34회) = 116회** 대상.
+                                💡 **개선 대상 모수(129회) 산출 근거:**<br>
+                                - 25년 12월 전체 소Lot 교체 176회 중 샘플(24회), 정상(13회), 긴급(8회), 단종(2회), 재작업(0회) 등 불가피한 47회 제외.<br>
+                                - **통제 가능한 영업 소Lot(82회) + 원자재 기준 생산(34회) + 몰딩제품 조정(13회) = 129회** 대상.
                             </div>
                         </div>
                     </div>
@@ -954,6 +954,7 @@
         document.getElementById('lblTotalLossKrw').innerText = `₩${Math.round(totalLossKrw).toLocaleString()}`;
         document.getElementById('lblMonthlySavings').innerText = `₩${Math.round(totalMonthlySavings).toLocaleString()}`;
         document.getElementById('lblYearlySavings').innerText = `₩${Math.round(totalYearlySavings).toLocaleString()}`;
+        document.getElementById('lblSavingsSub').innerText = `개선 모수 ${targetCount}회 중 ${reducedCount.toFixed(1)}회 감축`;
         
         const pctText = Math.round(improvementRate * 100);
         document.getElementById('lblPercentMonthly').innerText = pctText;
